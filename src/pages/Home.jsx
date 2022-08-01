@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Products from "../components/Products";
 
 //Navbar and Products components are rendered inside a parent component Homepage
-function Homepage() {
+function Home() {
 	return (
 		<>
 			<Navbar />
@@ -12,4 +12,4 @@ function Homepage() {
 	);
 }
 
-export default Homepage;
+export default Home;
