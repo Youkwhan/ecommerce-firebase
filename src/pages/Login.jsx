@@ -4,7 +4,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase-config";
 
 function Login() {
-	
 	const navigate = useNavigate();
 
 	const [email, setEmail] = useState("");
@@ -36,18 +35,14 @@ function Login() {
 		<div className="container">
 			<br></br>
 			<br></br>
-
 			<h1>Login</h1>
-
 			<hr></hr>
-
 			{successMsg && (
 				<>
 					<div className="success-msg">{successMsg} </div>
 					<br></br>
 				</>
 			)}
-
 			<form className="form-group" autoComplete="off" onSubmit={handleLogin}>
 				<label htmlFor="email">Email:</label>
 				<input
@@ -59,7 +54,6 @@ function Login() {
 				></input>
 
 				<br></br>
-
 				<label htmlFor="password">Password:</label>
 				<input
 					type="password"
@@ -70,7 +64,6 @@ function Login() {
 				></input>
 
 				<br></br>
-
 				<div className="btn-box">
 					<span>
 						Don't have an account. SignUp

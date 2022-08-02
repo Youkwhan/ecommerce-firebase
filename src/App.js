@@ -4,6 +4,7 @@ import "./global.css";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import AddProducts from "./pages/AddProducts";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
 				<Route exact path="/" element={<Home />} />
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/login" element={<Login />} />
+				<Route path="/add-products" element={<AddProducts />} />
 				{/* Default path if user goes non existing route */}
 				<Route path="*" element={<NotFound />} />
 			</Routes>

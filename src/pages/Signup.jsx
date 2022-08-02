@@ -5,7 +5,6 @@ import { auth, db } from "../config/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
 
 function Signup() {
-	
 	const navigate = useNavigate();
 
 	const [fullName, setFullName] = useState("");
@@ -61,18 +60,14 @@ function Signup() {
 		<div className="container">
 			<br></br>
 			<br></br>
-
 			<h1>Sign Up</h1>
-
 			<hr></hr>
-
 			{successMsg && (
 				<>
 					<div className="success-msg">{successMsg} </div>
 					<br></br>
 				</>
 			)}
-
 			<form className="form-group" autoComplete="off" onSubmit={handleSignUp}>
 				<label htmlFor="fname">Full Name:</label>
 				<input
@@ -84,7 +79,6 @@ function Signup() {
 				></input>
 
 				<br></br>
-
 				<label htmlFor="email">Email:</label>
 				<input
 					type="email"
@@ -95,7 +89,6 @@ function Signup() {
 				></input>
 
 				<br></br>
-
 				<label htmlFor="password">Password:</label>
 				<input
 					type="password"
@@ -106,7 +99,6 @@ function Signup() {
 				></input>
 
 				<br></br>
-
 				<div className="btn-box">
 					<span>
 						Already have an account. Login
@@ -120,7 +112,6 @@ function Signup() {
 					</button>
 				</div>
 			</form>
-
 			{errorMsg && (
 				<>
 					<br></br>
