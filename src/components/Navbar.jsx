@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../images/hamood.png"
 
-function Navbar() {
+function Navbar({user}) {
 	return (
 		<div className="navbar">
 			<div className="leftside">
