@@ -5,6 +5,7 @@ import { auth, db } from "../config/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
 
 function Signup() {
+	
 	const navigate = useNavigate();
 
 	const [fullName, setFullName] = useState("");
@@ -12,7 +13,7 @@ function Signup() {
 	const [password, setPassword] = useState("");
 
 	const [errorMsg, setErrorMsg] = useState("");
-	const [sucessMsg, setSucessMsg] = useState("");
+	const [successMsg, setSuccessMsg] = useState("");
 
 	const handleSignUp = (e) => {
 		//Clicking on a Signup" button, prevent default form from submitting"
@@ -37,13 +38,13 @@ function Signup() {
 					Password: password,
 				})
 					.then(() => {
-						setSucessMsg("Signup Successfull. Redirecting to Login");
+						setSuccessMsg("Signup Successfull. Redirecting to Login");
 						setFullName("");
 						setEmail("");
 						setPassword("");
 						setErrorMsg("");
 						setTimeout(() => {
-							setSucessMsg("");
+							setSuccessMsg("");
 							navigate("/login");
 						}, 3000);
 					})
@@ -65,9 +66,9 @@ function Signup() {
 
 			<hr></hr>
 
-			{sucessMsg && (
+			{successMsg && (
 				<>
-					<div className="sucess-msg">{sucessMsg} </div>
+					<div className="success-msg">{successMsg} </div>
 					<br></br>
 				</>
 			)}
@@ -76,7 +77,7 @@ function Signup() {
 				<label htmlFor="fname">Full Name:</label>
 				<input
 					type="text"
-					className="form_control"
+					className="form-control"
 					required
 					onChange={(e) => setFullName(e.target.value)}
 					value={fullName}
@@ -87,7 +88,7 @@ function Signup() {
 				<label htmlFor="email">Email:</label>
 				<input
 					type="email"
-					className="form_control"
+					className="form-control"
 					required
 					onChange={(e) => setEmail(e.target.value)}
 					value={email}
@@ -98,7 +99,7 @@ function Signup() {
 				<label htmlFor="password">Password:</label>
 				<input
 					type="password"
-					className="form_control"
+					className="form-control"
 					required
 					onChange={(e) => setPassword(e.target.value)}
 					value={password}
@@ -106,7 +107,7 @@ function Signup() {
 
 				<br></br>
 
-				<div className="form_btn">
+				<div className="btn-box">
 					<span>
 						Already have an account. Login
 						<Link to="/login" className="link">
@@ -114,7 +115,7 @@ function Signup() {
 						</Link>
 					</span>
 
-					<button type="submit" className="form_btn_sucess">
+					<button type="submit" className="btn btn-success btn-md">
 						SIGN UP
 					</button>
 				</div>

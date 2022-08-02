@@ -4,25 +4,26 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase-config";
 
 function Login() {
+	
 	const navigate = useNavigate();
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	const [errorMsg, setErrorMsg] = useState("");
-	const [sucessMsg, setSucessMsg] = useState("");
+	const [successMsg, setSuccessMsg] = useState("");
 
 	const handleLogin = (e) => {
 		e.preventDefault();
 		//console.log(email, password);
 		signInWithEmailAndPassword(auth, email, password)
 			.then(() => {
-				setSucessMsg("Login Successfull. Redirecting to Homepage");
+				setSuccessMsg("Login Successfull. Redirecting to Homepage");
 				setEmail("");
 				setPassword("");
 				setErrorMsg("");
 				setTimeout(() => {
-					setSucessMsg("");
+					setSuccessMsg("");
 					navigate("/");
 				}, 3000);
 			})
@@ -40,9 +41,9 @@ function Login() {
 
 			<hr></hr>
 
-			{sucessMsg && (
+			{successMsg && (
 				<>
-					<div className="sucess-msg">{sucessMsg} </div>
+					<div className="success-msg">{successMsg} </div>
 					<br></br>
 				</>
 			)}
@@ -51,7 +52,7 @@ function Login() {
 				<label htmlFor="email">Email:</label>
 				<input
 					type="email"
-					className="form_control"
+					className="form-control"
 					required
 					onChange={(e) => setEmail(e.target.value)}
 					value={email}
@@ -62,7 +63,7 @@ function Login() {
 				<label htmlFor="password">Password:</label>
 				<input
 					type="password"
-					className="form_control"
+					className="form-control"
 					required
 					onChange={(e) => setPassword(e.target.value)}
 					value={password}
@@ -70,7 +71,7 @@ function Login() {
 
 				<br></br>
 
-				<div className="form_btn">
+				<div className="btn-box">
 					<span>
 						Don't have an account. SignUp
 						<Link to="/signup" className="link">
@@ -78,7 +79,7 @@ function Login() {
 						</Link>
 					</span>
 
-					<button type="submit" className="form_btn_sucess">
+					<button type="submit" className="btn btn-success btn-md">
 						LOGIN
 					</button>
 				</div>
