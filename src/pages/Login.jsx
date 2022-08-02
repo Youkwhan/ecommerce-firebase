@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config/firebase-config";
 
 function Login() {
+	const navigate = useNavigate();
+
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -9,9 +13,23 @@ function Login() {
 	const [sucessMsg, setSucessMsg] = useState("");
 
 	const handleLogin = (e) => {
-    e.preventDefault();
-    console.log(email, password)
-  };
+		e.preventDefault();
+		//console.log(email, password);
+		signInWithEmailAndPassword(auth, email, password)
+			.then(() => {
+				setSucessMsg("Login Successfull. Redirecting to Homepage");
+				setEmail("");
+				setPassword("");
+				setErrorMsg("");
+				setTimeout(() => {
+					setSucessMsg("");
+					navigate("/");
+				}, 3000);
+			})
+			.catch((error) => {
+				setErrorMsg(error.message);
+			});
+	};
 
 	return (
 		<div className="container">
@@ -21,6 +39,13 @@ function Login() {
 			<h1>Login</h1>
 
 			<hr></hr>
+
+			{sucessMsg && (
+				<>
+					<div className="sucess-msg">{sucessMsg} </div>
+					<br></br>
+				</>
+			)}
 
 			<form className="form-group" autoComplete="off" onSubmit={handleLogin}>
 				<label htmlFor="email">Email:</label>
@@ -58,6 +83,12 @@ function Login() {
 					</button>
 				</div>
 			</form>
+			{errorMsg && (
+				<>
+					<br></br>
+					<div className="error-msg">{errorMsg} </div>
+				</>
+			)}
 		</div>
 	);
 }

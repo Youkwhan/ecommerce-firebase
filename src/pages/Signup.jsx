@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../config/firebase-config";
-import {collection} from "firebase/firestore"
+import { doc, setDoc } from "firebase/firestore";
 
 function Signup() {
 	const navigate = useNavigate();
@@ -18,18 +18,24 @@ function Signup() {
 		//Clicking on a Signup" button, prevent default form from submitting"
 		e.preventDefault();
 		//console.log(fullName, email, password);
-
 		createUserWithEmailAndPassword(auth, email, password)
 			.then((credentials) => {
 				console.log(credentials);
 				//Collection of users
-				collection(db, "users")
-					.doc(credentials.user.uid)
-					.set({
-						FullName: fullName,
-						Email: email,
-						Password: password,
-					})
+
+				// collection(db, "users")
+				// 	.doc(credentials.user.uid)
+				// 	.set({
+				// 		FullName: fullName,
+				// 		Email: email,
+				// 		Password: password,
+				// 	})
+				const ref = doc(db, "users", credentials.user.uid);
+				setDoc(ref, {
+					FullName: fullName,
+					Email: email,
+					Password: password,
+				})
 					.then(() => {
 						setSucessMsg("Signup Successfull. Redirecting to Login");
 						setFullName("");
@@ -43,12 +49,10 @@ function Signup() {
 					})
 					.catch((error) => {
 						setErrorMsg(error.message);
-						console.log("It's me")
 					});
 			})
 			.catch((error) => {
 				setErrorMsg(error.message);
-				console.log("No It's me")
 			});
 	};
 
@@ -118,8 +122,8 @@ function Signup() {
 
 			{errorMsg && (
 				<>
-					<div className="error-msg">{errorMsg} </div>
 					<br></br>
+					<div className="error-msg">{errorMsg} </div>
 				</>
 			)}
 		</div>
