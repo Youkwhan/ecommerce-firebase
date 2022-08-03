@@ -43,7 +43,7 @@ function Home() {
 		}, []);
 		return user;
 	};
-
+	// Our user's name
 	const user = GetCurrentUser();
 	// console.log(user);
 
@@ -81,9 +81,9 @@ function Home() {
 			Product = product;
 			Product["qty"] = 1;
 			Product["TotalProductPrice"] = Product.qty * Product.price;
-			setDoc(doc(db, "Cart" + uid, product.ID), Product).then(()=>{
-				console.log("Successfully added to cart")
-			})
+			setDoc(doc(db, "Cart " + uid, product.ID), Product).then(() => {
+				console.log("Successfully added to cart");
+			});
 		} else {
 			navigate("login");
 		}
@@ -91,7 +91,6 @@ function Home() {
 
 	return (
 		<>
-			{/* Props are arguments passed into React components */}
 			<Navbar user={user} />
 			<br></br>
 			{products.length > 0 && (
