@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { auth, db } from "../config/firebase-config";
-import { doc, getDoc, collection, onSnapshot } from "firebase/firestore";
+import {
+	doc,
+	getDoc,
+	collection,
+	onSnapshot,
+	updateDoc,
+} from "firebase/firestore";
 import CartProducts from "../components/CartProducts";
 
 function Cart() {
@@ -45,7 +51,50 @@ function Cart() {
 			}
 		});
 	}, []);
-	console.log(cartProducts);
+	// console.log(cartProducts);
+
+	// global variable
+	let Product;
+	// cart product increase function called from IndividualCartProduct onClick (+)
+	const cartProductIncrease = (cartProduct) => {
+		// console.log(cartProduct);
+		Product = cartProduct;
+		Product.qty = Product.qty + 1;
+		Product.TotalProductPrice = Product.qty * Product.price;
+		// Update in firestore database
+		auth.onAuthStateChanged((user) => {
+			if (user) {
+				updateDoc(doc(db, "Cart " + user.uid, cartProduct.ID), Product).then(
+					() => {
+						console.log("incremenet added");
+					}
+				);
+			} else {
+				console.log("user is not logged in to increment");
+			}
+		});
+	};
+
+	// cart product decrease functionlity
+	const cartProductDecrease = (cartProduct) => {
+		Product = cartProduct;
+		if (Product.qty > 1) {
+			Product.qty = Product.qty - 1;
+			Product.TotalProductPrice = Product.qty * Product.price;
+			// Update in firestore database
+			auth.onAuthStateChanged((user) => {
+				if (user) {
+					updateDoc(doc(db, "Cart " + user.uid, cartProduct.ID), Product).then(
+						() => {
+							console.log("decrement added");
+						}
+					);
+				} else {
+					console.log("user is not logged in to decrement");
+				}
+			});
+		}
+	};
 
 	return (
 		<>
@@ -55,7 +104,11 @@ function Cart() {
 				<div className="container-fluid">
 					<h1 className="text-center">Cart</h1>
 					<div className="products-box">
-						<CartProducts cartProducts={cartProducts} />
+						<CartProducts
+							cartProducts={cartProducts}
+							cartProductIncrease={cartProductIncrease}
+                     cartProductDecrease={cartProductDecrease}
+						/>
 					</div>
 				</div>
 			)}

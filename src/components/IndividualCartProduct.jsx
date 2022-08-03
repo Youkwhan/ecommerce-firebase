@@ -1,10 +1,33 @@
 import React from "react";
-import {Icon} from 'react-icons-kit'
-import {plus} from 'react-icons-kit/feather/plus'
-import {minus} from 'react-icons-kit/feather/minus'
-import {auth,db} from "../config/firebase-config"
+import { Icon } from "react-icons-kit";
+import { plus } from "react-icons-kit/feather/plus";
+import { minus } from "react-icons-kit/feather/minus";
+import { auth, db } from "../config/firebase-config";
+import { doc, deleteDoc } from "firebase/firestore";
 
-function IndividualCartProduct({ cartProduct }) {
+function IndividualCartProduct({
+	cartProduct,
+	cartProductIncrease,
+	cartProductDecrease,
+}) {
+	const handleCartProductIncrease = () => {
+		cartProductIncrease(cartProduct);
+	};
+
+	const handleCartProductDecrease = () => {
+		cartProductDecrease(cartProduct);
+	};
+
+	const handleCartProductDelete = () => {
+		auth.onAuthStateChanged((user) => {
+			if (user) {
+				deleteDoc(doc(db, "Cart " + user.uid, cartProduct.ID)).then(() => {
+					console.log("successfully deleted");
+				});
+			}
+		});
+	};
+
 	return (
 		<div className="product">
 			<div className="product-img">
@@ -15,11 +38,11 @@ function IndividualCartProduct({ cartProduct }) {
 			<div className="product-text price">$ {cartProduct.price}</div>
 			<span>Quantity</span>
 			<div className="product-text quantity-box">
-				<div className="action-btns minus" >
+				<div className="action-btns minus" onClick={handleCartProductDecrease}>
 					<Icon icon={minus} size={20} />
 				</div>
 				<div>{cartProduct.qty}</div>
-				<div className="action-btns plus" >
+				<div className="action-btns plus" onClick={handleCartProductIncrease}>
 					<Icon icon={plus} size={20} />
 				</div>
 			</div>
@@ -28,7 +51,7 @@ function IndividualCartProduct({ cartProduct }) {
 			</div>
 			<div
 				className="btn btn-danger btn-md cart-btn"
-				
+				onClick={handleCartProductDelete}
 			>
 				DELETE
 			</div>
