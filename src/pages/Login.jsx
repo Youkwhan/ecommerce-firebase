@@ -24,7 +24,7 @@ function Login() {
 				setTimeout(() => {
 					setSuccessMsg("");
 					navigate("/");
-				}, 3000);
+				}, 2000);
 			})
 			.catch((error) => {
 				setErrorMsg(error.message);

@@ -2,10 +2,30 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Products from "../components/Products";
 import { auth, db } from "../config/firebase-config";
-import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, setDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 // Navbar and Products components are rendered inside a parent component Homepage
 function Home() {
+	const navigate = useNavigate();
+
+	// getting current user uid
+	const GetUserUid = () => {
+		const [uid, setUid] = useState(null);
+		useEffect(() => {
+			onAuthStateChanged(auth, (user) => {
+				// Check for user status
+				if (user) {
+					setUid(user.uid);
+				}
+			});
+		}, []);
+		return uid;
+	};
+	//Current logged in uid
+	const uid = GetUserUid();
+
 	// get curr user Function
 	const GetCurrentUser = () => {
 		const [user, setUser] = useState(null);
@@ -51,6 +71,24 @@ function Home() {
 		getProducts();
 	}, []);
 
+	//Looping through individual Products from IndividualProduct which calls AddToCart which creates a new db collection with these attributes per item
+	//global variable to add Product to firebase collection
+	let Product;
+	const addToCart = (product) => {
+		//Determin if user logged in
+		if (uid !== null) {
+			// console.log(product);
+			Product = product;
+			Product["qty"] = 1;
+			Product["TotalProductPrice"] = Product.qty * Product.price;
+			setDoc(doc(db, "Cart" + uid, product.ID), Product).then(()=>{
+				console.log("Successfully added to cart")
+			})
+		} else {
+			navigate("login");
+		}
+	};
+
 	return (
 		<>
 			{/* Props are arguments passed into React components */}
@@ -60,7 +98,7 @@ function Home() {
 				<div className="container-fluid">
 					<h1 className="text-center">Products</h1>
 					<div className="products-box">
-						<Products products={products} />
+						<Products products={products} addToCart={addToCart} />
 					</div>
 				</div>
 			)}
