@@ -56,6 +56,18 @@ function Home() {
 			{/* Props are arguments passed into React components */}
 			<Navbar user={user} />
 			<br></br>
+			{products.length > 0 && (
+				<div className="container-fluid">
+					<h1 className="text-center">Products</h1>
+					<div className="products-box">
+						<Products products={products} />
+					</div>
+				</div>
+			)}
+			{products.length < 1 && (
+				//Because our product retrieval code is a async task
+				<div className="container-fluid">Please wait...</div>
+			)}
 		</>
 	);
 }

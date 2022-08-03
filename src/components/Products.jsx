@@ -1,7 +1,14 @@
 import React from "react";
+import IndividualProduct from "./IndividualProduct";
 
-function Products() {
-	return <div>individual Product 1 individual Product2</div>;
+function Products({ products }) {
+	//console.log(products);
+	return products.map((individualProduct) => (
+		<IndividualProduct
+			key={individualProduct.ID}
+			individualProduct={individualProduct}
+		/>
+	));
 }
 
 export default Products;
