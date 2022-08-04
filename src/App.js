@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 
 function App() {
 	return (
+		//sdadads
 		<Router>
 			<Routes>
 				{/* React Route does partial matching, so "/" partially matches every route so we use exact! */}
