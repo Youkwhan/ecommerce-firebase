@@ -4,9 +4,11 @@ import { auth, db } from "../config/firebase-config";
 import {
 	doc,
 	getDoc,
+	getDocs,
 	collection,
 	onSnapshot,
 	updateDoc,
+	deleteDoc,
 } from "firebase/firestore";
 import CartProducts from "../components/CartProducts";
 import StripeCheckout from "react-stripe-checkout";
@@ -162,6 +164,12 @@ function Cart() {
 				draggable: false,
 				progress: undefined,
 			});
+
+			const uid = auth.currentUser.uid;
+			const carts = await getDocs(collection(db, "Cart " + uid));
+			for (var snap of carts.docs) {
+				deleteDoc(doc(db, "Cart " + uid), snap.id);
+			}
 		} else {
 			alert("Something went wrong in checkout");
 		}
