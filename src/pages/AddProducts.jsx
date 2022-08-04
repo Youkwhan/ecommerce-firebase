@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { storage, db } from "../config/firebase-config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
+import { Link } from "react-router-dom";
 
 function AddProducts() {
 	const [title, setTitle] = useState("");
@@ -81,6 +82,9 @@ function AddProducts() {
 
 	return (
 		<div className="container">
+			<Link className="navlink" to="/">
+				HOME
+			</Link>
 			<br></br>
 			<br></br>
 			<h1>Add Products</h1>

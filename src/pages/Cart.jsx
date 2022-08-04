@@ -10,6 +10,11 @@ import {
 } from "firebase/firestore";
 import CartProducts from "../components/CartProducts";
 import StripeCheckout from "react-stripe-checkout";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Cart() {
 	// get curr user Function
@@ -133,8 +138,38 @@ function Cart() {
 		});
 	}, []);
 
+	// Charging Payment. Token is used to connect our frontend and backend, Acts like a bridge between the two. We will send a response from our backend and that response will be tackled in this token function
+	const navigate = useNavigate();
+	const handleToken = async (token) => {
+		// console.log(token);
+		const cart = { name: "All Products", totalPrice };
+		// send a response from front to backend
+		const response = await axios.post("http://localhost:8080/checkout", {
+			token,
+			cart,
+		});
+		console.log(response);
+		let { status } = response.data;
+		console.log(status);
+		if (status === "success") {
+			navigate("/");
+			toast.success("Your order has been placed successfully", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: false,
+				draggable: false,
+				progress: undefined,
+			});
+		} else {
+			alert("Something went wrong in checkout");
+		}
+	};
+
 	return (
 		<>
+			<ToastContainer theme="dark" />
 			<Navbar user={user} totalProducts={totalProducts} />
 			<br></br>
 			{cartProducts.length > 0 && (
@@ -157,7 +192,14 @@ function Cart() {
 							Total Price to Pay: <span>$ {totalPrice}</span>
 						</div>
 						<br></br>
-						<StripeCheckout></StripeCheckout>
+						<StripeCheckout
+							stripeKey="pk_test_51LSuXxAKnwZ9m1lykNhDNDqD3DSGdOKj1gLlm6YefSaNCMwDxunZ3Tu63UFepFOHaFaj1rY5SNc49S4ziURkjqJV00NcIFOfC6"
+							token={handleToken}
+							billingAddress
+							shippingAddress
+							name="All Products"
+							amount={totalPrice * 100}
+						></StripeCheckout>
 					</div>
 				</div>
 			)}
