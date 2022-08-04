@@ -1,7 +1,7 @@
 import React from "react";
 
 function IndividualProduct({ individualProduct, addToCart }) {
-	console.log(individualProduct);
+	//console.log(individualProduct);
 	const handleAddToCart = () => {
 		addToCart(individualProduct);
 	};

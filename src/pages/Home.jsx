@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Products from "../components/Products";
 import { auth, db } from "../config/firebase-config";
-import { doc, getDoc, collection, getDocs, setDoc } from "firebase/firestore";
+import {
+	doc,
+	getDoc,
+	collection,
+	getDocs,
+	setDoc,
+	onSnapshot,
+} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -71,6 +78,20 @@ function Home() {
 		getProducts();
 	}, []);
 
+	// state of totalProducts, which is send to Homepage Navbar to be notifer
+	const [totalProducts, setTotalProducts] = useState(0);
+	// getting number of products in cart
+	useEffect(() => {
+		auth.onAuthStateChanged((user) => {
+			if (user) {
+				onSnapshot(collection(db, "Cart " + user.uid), (snapshot) => {
+					const qty = snapshot.docs.length;
+					setTotalProducts(qty);
+				});
+			}
+		});
+	}, []);
+
 	//Looping through individual Products from IndividualProduct which calls AddToCart which creates a new db collection with these attributes per item
 	//global variable to add Product to firebase collection
 	let Product;
@@ -91,7 +112,7 @@ function Home() {
 
 	return (
 		<>
-			<Navbar user={user} />
+			<Navbar user={user} totalProducts = {totalProducts}/>
 			<br></br>
 			{products.length > 0 && (
 				<div className="container-fluid">

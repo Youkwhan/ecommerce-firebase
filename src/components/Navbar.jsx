@@ -6,7 +6,7 @@ import { shoppingCart } from "react-icons-kit/feather/shoppingCart";
 import { auth } from "../config/firebase-config";
 import { signOut } from "firebase/auth";
 
-function Navbar({ user }) {
+function Navbar({ user, totalProducts }) {
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
@@ -62,7 +62,7 @@ function Navbar({ user }) {
 							<Link className="navlink" to="/cart">
 								<Icon icon={shoppingCart} size={20} />
 							</Link>
-							{/* <span className="cart_indicator">{totalQty}</span> */}
+							<span className="cart_indicator">{totalProducts}</span>
 						</div>
 						<div className="btn btn-danger btn-md" onClick={handleLogout}>
 							LOGOUT
