@@ -164,14 +164,14 @@ function Cart() {
 				draggable: false,
 				progress: undefined,
 			});
-
+			console.log("toast ran");
 			const uid = auth.currentUser.uid;
 			const carts = await getDocs(collection(db, "Cart " + uid));
 			for (var snap of carts.docs) {
-				deleteDoc(doc(db, "Cart " + uid), snap.id);
+				deleteDoc(doc(db, "Cart " + uid, snap.id));
 			}
 		} else {
-			alert("Something went wrong in checkout");
+			//alert("Something went wrong in checkout");
 		}
 	};
 
